@@ -1,0 +1,14 @@
+This is the repository for Machine Learning 
+
+This is the contents present:-
+Week3-Find S and Candidate Elimination
+Week4-Perceptron
+Week5-Linear Regression
+Week6-Back Propogation
+Week7-Principal Component Analysis(PCA)
+Week8-MLP using back Propogation
+Week9-KMeans Clustering
+Week10-EM Algorithm
+Week11-KNN Algorithm(K-Nearest Neighbour Algorithm)
+Week12-Decision Tree
+

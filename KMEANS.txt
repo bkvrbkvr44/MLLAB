@@ -1,0 +1,32 @@
+import pandas as pd
+import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.metrics import jaccard_score
+from sklearn.preprocessing import LabelEncoder
+
+data = pd.read_csv('iris.csv')
+X = data.iloc[:, :4]
+
+ground_truth_labels = data.iloc[:, -1]
+
+kmeans = KMeans(n_clusters=3, init='random', n_init=1, random_state=42)
+
+kmeans.fit(X)
+
+cluster_centroids = kmeans.cluster_centers_
+
+cluster_assignments = kmeans.labels_
+
+label_encoder = LabelEncoder()
+ground_truth_encoded = label_encoder.fit_transform(ground_truth_labels)
+
+jaccard_distances = []
+for cluster_num in range(3):
+    cluster_indices = np.where(cluster_assignments == cluster_num)[0]
+    ground_truth_cluster = ground_truth_encoded[cluster_indices]
+    jaccard_distance = 1.0 - jaccard_score(ground_truth_cluster, np.full_like(ground_truth_cluster, cluster_num), average='weighted')
+    jaccard_distances.append(jaccard_distance)
+
+for cluster_num, centroid in enumerate(cluster_centroids):
+    print(f"Cluster {cluster_num + 1} Centroid: {centroid}")
+    print(f"Jaccard Distance for Cluster {cluster_num + 1}: {jaccard_distances[cluster_num]}")
