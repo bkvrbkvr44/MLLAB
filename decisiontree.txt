@@ -1,0 +1,46 @@
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
+import pandas as pd
+
+# Create a hypothetical dataset with categorical variables
+data = {
+    'Outlook': ['Sunny', 'Sunny', 'Overcast', 'Rainy', 'Rainy', 'Rainy', 'Overcast', 'Sunny', 'Sunny', 'Rainy', 'Sunny', 'Overcast', 'Overcast', 'Rainy'],
+    'Temperature': ['Hot', 'Hot', 'Hot', 'Mild', 'Cool', 'Cool', 'Cool', 'Mild', 'Cool', 'Mild', 'Mild', 'Mild', 'Hot', 'Mild'],
+    'Humidity': ['High', 'High', 'High', 'High', 'Normal', 'Normal', 'Normal', 'High', 'Normal', 'Normal', 'Normal', 'High', 'Normal', 'High'],
+    'Windy': ['No', 'Yes', 'No', 'No', 'No', 'Yes', 'Yes', 'No', 'No', 'No', 'Yes', 'Yes', 'No', 'Yes'],
+    'Play Golf': ['No', 'No', 'Yes', 'Yes', 'Yes', 'No', 'Yes', 'No', 'Yes', 'Yes', 'Yes', 'Yes', 'Yes', 'No']
+}
+
+# Convert the dictionary to a Pandas DataFrame
+df = pd.DataFrame(data)
+
+# Separate features (X) and target variable (y)
+X = df.drop('Play Golf', axis=1)
+y = df['Play Golf']
+
+# One-hot encode categorical variables
+encoder = OneHotEncoder(sparse=False, drop='first')
+X_encoded = encoder.fit_transform(X)
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_encoded, y, test_size=0.2, random_state=42)
+
+# Create a Decision Tree classifier
+clf = DecisionTreeClassifier()
+clf.fit(X_train, y_train)
+accuracy = clf.score(X_test, y_test)
+print("Accuracy:", accuracy)
+# Now, let's make predictions on new data
+new_data = {
+    'Outlook': ['Sunny'],
+    'Temperature': ['Mild'],
+    'Humidity': ['Normal'],
+    'Windy': ['No']
+}
+new_df = pd.DataFrame(new_data)
+new_df_encoded = encoder.transform(new_df)
+prediction = clf.predict(new_df_encoded)
+print("Predicted Play Golf:", prediction[0])
+tree_structure = clf.tree_
+plot_tree(clf, filled=True, feature_names=encoder.get_feature_names_out(X.columns), class_names=clf.classes_)
