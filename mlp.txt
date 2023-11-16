@@ -1,0 +1,73 @@
+1)
+from sklearn.neural_network import MLPClassifier
+import numpy as np
+
+# Define the XOR input data and corresponding labels
+X = np.array([[0, 0],
+              [0, 1],
+              [1, 0],
+              [1, 1]])
+
+y = np.array([0, 1, 1, 0])
+
+# Create an MLPClassifier with one hidden layer of 4 neurons (you can adjust this)
+mlp = MLPClassifier(hidden_layer_sizes=(2,1), max_iter=1000)
+
+# Train the model
+mlp.fit(X, y)
+
+# Test the model
+predictions = mlp.predict(X)
+
+# Print the predictions
+print("Predictions:", predictions)
+
+# Print the accuracy
+accuracy = np.mean(predictions == y)
+print("Accuracy:", accuracy)
+2)
+import numpy as np
+e=2.71828
+i1=0.05
+i2=0.1
+w1=0.15
+w2=0.2
+w3=0.25
+w4=0.3
+w5=0.4
+w6=0.45
+w7=0.5
+w8=0.55
+b1=0.35
+b2=0.6
+num=10000
+target1=0.01
+target2=0.99
+lr=0.8
+for i in range(num):
+    h1=(i1*w1+i2*w3)+b1
+    h2=(i1*w2+i2*w4)+b1
+    import math
+    act1=1/(1+math.pow(e,-h1))
+    act2=1/(1+math.pow(e,-h2))
+   
+    h_o1=(act1*w5+act2*w7)+b2
+    h_o2=(act1*w6+act2*w8)+b2
+    o1=1/(1+math.pow(e,-h_o1))
+    o2=1/(1+math.pow(e,-h_o2))
+   
+    delta_o1=-(target1-o1)o1(1-o1)
+    delta_o2=-(target2-o2)o2(1-o2)
+    delta_h1=((delta_o1*w5)+(delta_o2*w6))act1(1-act1)
+    delta_h2=((delta_o1*w7)+(delta_o2*w8))act2(1-act2)
+    w5-=lr*(delta_o1*act1)
+    w6-=lr*(delta_o2*act1)
+    w7-=lr*(delta_o1*act2)
+    w8-=lr*(delta_o2*act2)
+   
+    w1-=lr*(delta_h1*i1)
+    w2-=lr*(delta_h2*i1)
+    w3-=lr*(delta_h1*i2)
+    w4-=lr*(delta_h2*i2)
+print(target1-o1,target2-o2)
+print(f" w1={w1: .4f} , w2={w2: .4f} ,w3={w3: .4f} ,w4={w4: .4f} ,w5={w5: .4f} ,w6={w6: .4f}, w7={w7: .4f}, w8={w8: .4f}")
